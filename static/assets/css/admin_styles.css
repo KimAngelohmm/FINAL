@@ -1,101 +1,152 @@
 /* Admin-specific styles that extend the main styles.css */
 
-/* User section in navbar */
-.user-section {
+/* Updated navbar styling */
+header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    margin-left: 30px;
+    background-color: #FF6600;
+    padding: 0.5rem 2rem;
+    color: white;
 }
 
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.logo-title img {
+    height: 50px;
 }
 
-.profile-pic-placeholder {
+/* Right section containing nav and profile */
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Navigation styling */
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav ul li {
+    margin: 0 1rem;
+}
+
+.main-nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.main-nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Profile container styling */
+.admin-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-pic {
     width: 40px;
     height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    font-size: 26px;
 }
 
-.profile-pic-placeholder i {
-    display: block;
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.username {
+/* Default profile icon styling */
+.profile-pic i {
+    font-size: 1.5rem;
+    color: #FF6600;
+}
+
+.admin-profile-text {
     color: white;
     font-weight: bold;
-    font-size: 1em;
 }
 
-.settings-dropdown {
-    position: relative;
-}
-
+/* Settings button and dropdown */
 .settings-btn {
     background: none;
     border: none;
     color: white;
-    font-size: 20px;
     cursor: pointer;
-    padding: 5px;
+    font-size: 1.2rem;
 }
 
 .settings-panel {
-    display: none;
     position: absolute;
-    right: 0;
-    top: 40px;
+    right: 1rem;
+    top: 4rem;
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    min-width: 200px;
-    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 100;
 }
 
 .settings-panel.visible {
     display: block;
 }
 
-.settings-panel a {
-    color: #333;
-    padding: 12px 20px;
+.settings-panel a, 
+.settings-panel button.logout-link {
+    padding: 0.75rem 1rem;
     text-decoration: none;
-    display: block;
-    border-bottom: 1px solid #eee;
+    color: #333;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    width: 100%;
+    text-align: left;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
-.settings-panel a:last-child {
-    border-bottom: none;
-}
-
-.settings-panel a:hover {
-    background-color: #fff4e7;
+.settings-panel a:hover,
+.settings-panel button.logout-link:hover {
+    background: #f5f5f5;
 }
 
 .settings-panel i {
-    margin-right: 10px;
     width: 20px;
+}
+
+/* Admin welcome section */
+.admin-welcome {
     text-align: center;
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.settings-panel a.active {
-    background-color: #fff4e7;
+.admin-welcome h1 {
+    font-size: 2.5em;
     color: #ff6600;
+    margin-bottom: 20px;
 }
 
-/* Navigation active state */
-nav a.active {
-    border-bottom: 2px solid white;
-    padding-bottom: 5px;
+.admin-welcome p {
+    font-size: 1.2em;
+    color: #555;
 }
 
 /* Admin panel styles */
@@ -199,45 +250,124 @@ nav a.active {
 .stat-card {
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     padding: 20px;
     text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:nth-child(1) {
+    background-color: #007bff;
+    color: white;
+}
+
+.stat-card:nth-child(2) {
+    background-color: #28a745;
+    color: white;
+}
+
+.stat-card:nth-child(3) {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.stat-card:nth-child(4) {
+    background-color: #ffc107;
+    color: white;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
 }
 
 .stat-card h3 {
     margin-top: 0;
-    color: #333;
-    font-size: 1em;
+    color: inherit;
+    font-size: 1.2em;
 }
 
 .stat-number {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: bold;
-    color: #ff6600;
-    margin: 10px 0 0;
+    margin: 10px 0;
 }
 
-/* Form elements */
+.stat-card small {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+/* Add icons to the stat cards */
+.stat-card:nth-child(1)::after {
+    content: "\f07a";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2.5rem;
+    opacity: 0.3;
+}
+
+.stat-card:nth-child(2)::after {
+    content: "\f155";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2.5rem;
+    opacity: 0.3;
+}
+
+.stat-card:nth-child(3)::after {
+    content: "\f0c0";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2.5rem;
+    opacity: 0.3;
+}
+
+.stat-card:nth-child(4)::after {
+    content: "\f254";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2.5rem;
+    opacity: 0.3;
+}
+
 select {
     width: 100%;
     padding: 10px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
     border-radius: 6px;
-    background-color: white;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
 }
 
-/* Modal styling */
 #addUserModal .floating-inner,
 #addMenuItemModal .floating-inner {
-    width: 400px;
+    max-width: 450px;
+    padding: 25px;
 }
 
-/* Media queries for responsive design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .admin-panel {
         width: 95%;
+    }
+    
+    .right-section {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-end;
     }
     
     .button-group.horizontal {
@@ -245,11 +375,301 @@ select {
     }
     
     .button-group.horizontal button {
-        margin-right: 0;
-        margin-bottom: 10px;
+        margin: 5px 0;
     }
     
     .dashboard-stats {
         grid-template-columns: 1fr;
     }
-} 
+    
+    .admin-welcome h1 {
+        font-size: 2em;
+    }
+    
+    .admin-welcome p {
+        font-size: 1em;
+    }
+}
+
+/* Additional responsive adjustments for smaller screens */
+@media (max-width: 576px) {
+    header {
+        padding: 0.5rem 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .right-section {
+        width: 100%;
+        margin-top: 0.5rem;
+        justify-content: flex-end;
+    }
+    
+    .main-nav ul {
+        gap: 0.5rem;
+    }
+    
+    .main-nav ul li {
+        margin: 0 0.3rem;
+    }
+    
+    .main-nav ul li a {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .admin-profile-text {
+        display: none;
+    }
+}
+
+/* Loading indicator */
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 102, 0, 0.2);
+    border-top: 4px solid #ff6600;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Profile Picture Update Modal Styles */
+#updateprofilepicUI .floating-inner {
+    text-align: center;
+    max-width: 400px;
+}
+
+.profile-pic-preview {
+    margin: 20px auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+}
+
+.profile-pic-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.file-input-button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#file-name {
+    color: #555;
+}
+
+.updateprofilepic-btn {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.updateprofilepic-btn:hover {
+    background-color: #e45c00;
+}
+
+/* About Us Page Styles */
+.about-us-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-us-container h1 {
+    color: #d35400;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.about-us-content {
+    margin-bottom: 40px;
+}
+
+.about-section {
+    margin-bottom: 30px;
+}
+
+.about-section h2 {
+    color: #d35400;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #d35400;
+    padding-bottom: 8px;
+}
+
+.about-section p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+}
+
+.edit-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.edit-section h2 {
+    color: #d35400;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+.save-btn {
+    background-color: #d35400;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: #a04000;
+}
+
+/* Account Info UI styles */
+#editaccountUI .floating-inner {
+    max-width: 450px;
+    max-height: 80vh;
+    padding: 20px;
+    padding-bottom: 80px;
+    position: relative;
+    padding-top: 30px;
+    overflow-y: auto;
+}
+
+/* Close button styling */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+    padding: 5px 10px;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.close-btn:hover {
+    background-color: #f0f0f0;
+    color: #ff6600;
+}
+
+#editaccountUI h3 {
+    margin-top: 12px;
+    margin-bottom: 5px;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+#editaccountUI input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+#editaccountUI input.custom-disabled {
+    background-color: #f9f9f9;
+    color: #555;
+    border: 1px solid #ddd;
+    cursor: default;
+}
+
+/* Add general floating UI styles to better handle scrolling */
+.floating-ui {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    width: 100%;
+}

@@ -2,7 +2,7 @@
 function toggleSettings() {
     const panel = document.getElementById("settingsPanel");
     if (panel) {
-        panel.style.display = panel.style.display === "block" ? "none" : "block";
+        panel.classList.toggle("visible");
     }
 }
 
@@ -27,6 +27,23 @@ function hideAllUI() {
 // ✅ Everything else waits for DOM to be ready
 document.addEventListener("DOMContentLoaded", function () {
     const overlay = document.getElementById("overlay");
+
+    // Add settings button click handler
+    const settingsBtn = document.getElementById("settingsBtn");
+    if (settingsBtn) {
+        settingsBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            toggleSettings();
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener("click", function(e) {
+            const settingsPanel = document.getElementById("settingsPanel");
+            if (settingsBtn && !settingsBtn.contains(e.target) && settingsPanel) {
+                settingsPanel.classList.remove("visible");
+            }
+        });
+    }
 
     // Username fetching
     fetch('/backend/cashier/get_username')

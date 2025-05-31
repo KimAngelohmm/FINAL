@@ -20,24 +20,29 @@ def profile_pic():
     conn = None
     try:
         conn = create_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
-        # Proper call to stored procedure
-        cursor.callproc('GetProfileImageByRole', (user_id, user_role))
-
-        for result in cursor.stored_results():
-            data = result.fetchone()
-
-        if data and data[0]:
-            return send_file(io.BytesIO(data[0]), mimetype='image/jpeg')
+        # Use direct query instead of stored procedure
+        print(f"DEBUG - profile_pic - Getting profile image for user_id: {user_id}, role: {user_role}")
+        
+        if user_role.lower() == 'customer':
+            cursor.execute("SELECT profile_image FROM customer_accounts WHERE customer_id = %s", (user_id,))
         else:
+            cursor.execute("SELECT profile_image FROM restaurant_accounts WHERE account_id = %s", (user_id,))
+            
+        result = cursor.fetchone()
+        
+        if result and result.get('profile_image'):
+            return send_file(io.BytesIO(result.get('profile_image')), mimetype='image/jpeg')
+        else:
+            print(f"DEBUG - profile_pic - No profile image found for user_id: {user_id}")
             return redirect(url_for('static', filename='assets/images/default_profile.png'))
 
     except Exception as e:
-        print(f"Error retrieving profile picture: {e}")
+        print(f"DEBUG - profile_pic - Error retrieving profile picture: {e}")
         return redirect(url_for('static', filename='assets/images/default_profile.png'))
     finally:
-        if cursor: cursor.close()
+        if conn and 'cursor' in locals(): cursor.close()
         if conn: conn.close()
 
 
@@ -45,8 +50,12 @@ def profile_pic():
 def get_username():
     user_id = session.get('user_id')
     role = session.get('role')
+    
+    # Debug logging
+    print(f"DEBUG - get_username - user_id: {user_id}, role: {role}")
 
     if not user_id or not role:
+        print("DEBUG - get_username - Not logged in (user_id or role missing)")
         return jsonify({'error': 'Not logged in'}), 401
 
     conn = None
@@ -54,20 +63,33 @@ def get_username():
     try:
         conn = create_connection()
         if not conn:
+            print("DEBUG - get_username - Database connection failed")
             return jsonify({'error': 'Database connection failed'}), 500
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Use direct query instead of stored procedure
+        print(f"DEBUG - get_username - Direct query for username with user_id: {user_id}, role: {role}")
+        
+        if role.lower() == 'customer':
+            cursor.execute("SELECT customer_username AS username FROM customer_accounts WHERE customer_id = %s", (user_id,))
+        else:
+            cursor.execute("SELECT username FROM restaurant_accounts WHERE account_id = %s", (user_id,))
+            
+        result = cursor.fetchone()
+        
+        # Debug logging
+        print(f"DEBUG - get_username - Query result: {result}")
 
-        cursor.callproc('GetUsernameByRole', (user_id, role))
-
-        for result in cursor.stored_results():
-            data = result.fetchone()
-
-        if data and data[0]:
-            return jsonify({'username': data[0]})
+        if result and result.get('username'):
+            username = result.get('username')
+            print(f"DEBUG - get_username - Username found: {username}")
+            return jsonify({'username': username})
+        
+        print("DEBUG - get_username - No username found")
         return jsonify({'username': None})
 
     except Exception as e:
-        print("Error fetching username:", e)
+        print(f"DEBUG - get_username - Error: {e}")
         return jsonify({'error': 'Internal server error'}), 500
     finally:
         if cursor: cursor.close()

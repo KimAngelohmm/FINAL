@@ -2,7 +2,7 @@
 function toggleSettings() {
     const panel = document.getElementById("settingsPanel");
     if (panel) {
-        panel.style.display = panel.style.display === "block" ? "none" : "block";
+        panel.classList.toggle("visible");
     }
 }
 
@@ -27,6 +27,23 @@ function hideAllUI() {
 // ✅ Everything else waits for DOM to be ready
 document.addEventListener("DOMContentLoaded", function () {
     const overlay = document.getElementById("overlay");
+
+    // Add settings button click handler
+    const settingsBtn = document.getElementById("settingsBtn");
+    if (settingsBtn) {
+        settingsBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            toggleSettings();
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener("click", function(e) {
+            const settingsPanel = document.getElementById("settingsPanel");
+            if (settingsBtn && !settingsBtn.contains(e.target) && settingsPanel) {
+                settingsPanel.classList.remove("visible");
+            }
+        });
+    }
 
     // Username fetching
     fetch('/backend/cashier/get_username')
@@ -101,15 +118,40 @@ document.addEventListener("DOMContentLoaded", function () {
                 contactnumber: document.getElementById("contactnumber_txt").value
             };
 
+            // Log the data being sent
+            console.log("Sending account update data:", data);
+
             fetch('/backend/cashier/update_account_info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
-            }).then(response => {
-                if (response.ok) {
+            })
+            .then(response => {
+                console.log("Update response status:", response.status);
+                return response.json().then(data => {
+                    return { status: response.status, data };
+                });
+            })
+            .then(result => {
+                console.log("Update response data:", result);
+                if (result.status === 200) {
                     alert("Account updated successfully!");
+                    // Update original values with new values on success
+                    originalValues = {
+                        username: document.getElementById("username_txt").value,
+                        firstname: document.getElementById("firstname_txt").value,
+                        middlename: document.getElementById("middlename_txt").value,
+                        lastname: document.getElementById("lastname_txt").value,
+                        position: document.getElementById("position_txt").value,
+                        email: document.getElementById("email_txt").value,
+                        contact: document.getElementById("contactnumber_txt").value
+                    };
                 } else {
-                    alert("Update failed.");
+                    // Show specific error message from the server if available
+                    const errorMessage = result.data && result.data.message ? result.data.message : "Update failed.";
+                    alert(errorMessage);
+                    
+                    // Restore original values on failure
                     document.getElementById("username_txt").value = originalValues.username;
                     document.getElementById("firstname_txt").value = originalValues.firstname;
                     document.getElementById("middlename_txt").value = originalValues.middlename;
@@ -117,9 +159,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("position_txt").value = originalValues.position;
                     document.getElementById("email_txt").value = originalValues.email;
                     document.getElementById("contactnumber_txt").value = originalValues.contact;
-
                 }
 
+                // Always disable inputs and reset UI state after attempt
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.classList.add("custom-disabled");
+                });
+                editUpdateBtn.textContent = "Edit Account";
+                cancelBtn.style.display = "none";
+                isEditing = false;
+            })
+            .catch(error => {
+                console.error("Error updating account:", error);
+                alert("An error occurred while updating your account.");
+                
+                // Restore original values on error
+                document.getElementById("username_txt").value = originalValues.username;
+                document.getElementById("firstname_txt").value = originalValues.firstname;
+                document.getElementById("middlename_txt").value = originalValues.middlename;
+                document.getElementById("lastname_txt").value = originalValues.lastname;
+                document.getElementById("position_txt").value = originalValues.position;
+                document.getElementById("email_txt").value = originalValues.email;
+                document.getElementById("contactnumber_txt").value = originalValues.contact;
+                
+                // Reset UI state on error
                 inputs.forEach(input => {
                     input.disabled = true;
                     input.classList.add("custom-disabled");

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Any-Haw Litsong Manok - Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            font-family: sans-serif;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #ff6600; 
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 10vh;
+            min-height: 70px;
+        }
+
+        .logo {
+            margin-top: 5px;
+        }
+            .search-box {
+            background: #ffa163;
+            padding: 3px;
+            border-radius: 5px;
+            display: flex;
+            margin-right: 700px;
+}
+
+            .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 5px;
+            color: black;
+            
+}
+
+            .search-icon {
+            font-size: 16px;
+            margin-left: 5px;
+            cursor: pointer;
+            
+}
+
+        .about-us {
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: #000;
+            
+            
+        }
+          
+        .my-cart {
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: #000;
+        }
+        
+        .about-us:hover {
+            transform: translateY(-1px);
+            color: #b71c1c;
+        }
+
+        .menu-body {
+            display: flex;
+            flex: 1;
+            height: 90vh;
+            overflow: hidden;
+        }
+
+        .menu-categories {
+            background-color: #d32f2f; 
+            color: white;
+            width: 20%;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .category-button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 20px 10px;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .category-button:hover, .category-button:active {
+            background-color: #b71c1c; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.658);
+            
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #fafafa;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .featured-heading {
+            background-color: #f4f4f4; 
+            padding: 20px;
+            color: #000;
+            font-size: 28px;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+        }
+
+        .menu-items-container {
+            padding: 10px 20px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .menu-item-card {
+            background-color: #fff;
+            border: 1px solid #b71c1c;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 350px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.658);
+            transition: transform 0.2s ease;
+            font-size: 18px;
+        }
+        
+        .menu-item-card:hover {
+            transform: translateY(-5px);
+            border: 4px solid #b71c1c;
+        }
+
+        .item-code {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6600;
+            margin-bottom: 15px;
+            font-family: "Roboto Slab";
+        }
+
+        .item-details {
+            font-size: 16px;
+            color: #0a0a0a;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .item-price {
+            font-size: 1.5em;
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .add-to-cart-button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 12px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.685);
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #e67e00;
+            transform: scale(1.05);
+        }
+
+        /* Popup styles */
+        .popup-bg {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px 25px 20px 25px;
+            min-width: 400px;
+            max-width: 95vw;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+            position: relative;
+            animation: popupIn 0.2s;
+        }
+
+        @keyframes popupIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #ff6600;
+            text-align: center;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+        }
+
+        .cart-list {
+            margin: 20px 0;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            gap: 10px;
+        }
+
+        .cart-item span {
+            flex: 2;
+            font-size: 1em;
+            color: #222;
+        }
+
+        .cart-item input[type="number"] {
+            width: 50px;
+            margin: 0 10px;
+            padding: 3px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: black;
+            font-size: 1.1em;
+        }
+
+        .popup-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .popup-buttons button {
+            flex: 1;
+            padding: 12px 0;
+            font-size: 1.1em;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            margin: 0 2px;
+        }
+
+        .checkout-btn {
+            background: #ff6600;
+            color: #fff;
+        }
+
+        .checkout-btn:hover {
+            background: #d9534f;
+        }
+
+        .save-btn {
+            background: #fff;
+            color: #ff6600;
+            border: 2px solid #ff6600;
+        }
+
+        .save-btn:hover {
+            background: #ff6600;
+            color: #fff;
+        }
+
+        .cancel-btn {
+            background: #ccc;
+            color: #333;
+        }
+
+        .cancel-btn:hover {
+            background: #bbb;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #d9534f;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+       
+        @media (max-width: 1024px) {
+            .menu-categories {
+                width: 25%;
+                min-width: 180px;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-body {
+                flex-direction: column;
+            }
+
+            .menu-categories {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                height: auto;
+                padding: 10px;
+                min-height: 70px;
+            }
+
+            .category-button {
+                padding: 10px 15px;
+                margin-right: 10px;
+                white-space: nowrap;
+                width: auto;
+                height: 100%;
+            }
+
+            .menu-items-container {
+                padding: 15px;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                max-height: none;
+            }
+
+            .menu-item-card {
+                padding: 15px;
+                height: 200px;
+            }
+
+            .item-code {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            .item-details {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px;
+                min-height: 60px;
+            }
+            
+            .logo {
+                font-size: 1.5em;
+            }
+            
+            .about-us {
+                font-size: 1em;
+            }
+            
+            .featured-heading {
+                padding: 15px;
+                font-size: 24px;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+            
+            .menu-item-card {
+                height: 180px;
+            }
+            
+            .item-code {
+                font-size: 18px;
+            }
+            
+            .item-details {
+                font-size: 14px;
+            }
+            
+            .item-price {
+                font-size: 1.3em;
+            }
+            
+            .add-to-cart-button {
+                padding: 10px 8px;
+                font-size: 0.9em;
+            }
+
+            .popup {
+                min-width: 90vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <div class="header">
+            
+            
+            <div class="logo">
+                <a href="#home"><img width="150px" height="64px" src="C:\xampp\htdocs\new_anyhaw_kim\new_anyhaw\anyhawlogo.png"></a>
+            </div>
+            <div class="my-cart">MY CART</div>
+            <div class="about-us" style="display:flex; align-items: center; gap: 2Spx;">ABOUT US</div>
+            <div class="search-box">
+                <input type="text" placeholder="Search">
+                <span class="search-icon">&#128269;</span>
+            </div>
+            
+        </div>
+        <div class="menu-body">
+            <div class="menu-categories">
+                <button class="category-button" data-category="catering-info">CATERING & RESERVATION</button>
+                <button class="category-button active" data-category="Featured-menu">FEATURED MENU</button>
+                <button class="category-button" data-category="combo-meal">COMBO MEAL</button>
+                <button class="category-button" data-category="Family-treats">FAMILY TREATS</button>
+                <button class="category-button" data-category="sizzling-meal">SIZZLING MEAL</button>
+                <button class="category-button" data-category="sizzling-dish">SIZZLING DISH</button>
+                <button class="category-button" data-category="silog">SILOG</button>
+                <button class="category-button" data-category="soups">SOUPS</button>
+                <button class="category-button" data-category="dessert">DESSERT</button>
+                <button class="category-button" data-category="drinks">DRINKS</button>
+                <button class="category-button" data-category="other-meals">OTHER MEALS</button>
+                <button class="category-button" data-category="litsong-manok">LITSONG MANOK</button>
+                <button class="category-button" data-category="lechon-baboy">LECHON BABOY</button>
+                <button class="category-button" data-category="Valenciana">VALENCIANA</button>
+                <button class="category-button" data-category="Sinigang">SINIGANG</button>
+            </div>
+            
+          <div class="content-area">
+                
+    <h1 class="featured-heading"></h1>
+    <div class="menu-items-container">
+        <!-- Menu items will be dynamically added here -->
+         
+    </div>
+</div>
+        </div>
+    </div>
+
+    <div class="popup-bg" id="cartPopupBg">
+        <div class="popup">
+            <h2>My Cart</h2>
+            <div class="cart-list" id="cartList"></div>
+            <div class="cart-total" id="cartTotal"></div>
+            <div class="popup-buttons">
+                <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+                <button class="save-btn" id="saveBtn">Save</button>
+                <button class="cancel-btn" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Popup Cart -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Display combo meal items by default
+    displayMenuItems('combo-meal');
+    
+    // Set the "COMBO MEAL" button as active by default
+    categoryButtons.forEach(btn => {
+        if (btn.dataset.category === 'combo-meal') {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+});
+        const categoryButtons = document.querySelectorAll('.category-button');
+        const menuItemsContainer = document.querySelector('.menu-items-container');
+        const featuredHeading = document.querySelector('.featured-heading');
+        
+        // Complete menu data - all categories
+        const allMenuItemsData = [
+            
+            
+            //Combo meal    
+             { name: "C1", details: "1 PC. BBQ 1 PC. VALENCIANA SOFTDRINKS(MISMO)", price: "₱120.00", category: "combo-meal" },
+            { name: "C2", details: "1 PC. BBQ 1 PC. VALENCIANA CHOPSUEY SOFTDRINKS(MISMO)", price: "₱120.00", category: "combo-meal" },
+            { name: "C3", details: "1 QUARTER LITSON MANOK 1 PC. BBQ  GARLIC RICE SOFTDRINKS(MISMO)", price: "₱120.00", category: "combo-meal" },
+            { name: "C4", details: "1 QUARTER LITSON MANOK CHOPSUEY GARLIC RICE SOFTDRINKS (MISMO)", price: "₱125.00", category: "combo-meal" },
+            
+            //family treats
+             { name: "FB1", details: "1 Jumbo Litson Manok 6 BBQ 1 Bangus Chopsuey Dish 6 Plain Rice Softdrinks 1.5L", price: "₱800.00", category: "Family-treats" },
+            { name: "FB2", details: "1 Jumbo Litson Manok 1 liempo 6 BBQ kare kare dish Dish 6 Plain Rice Softdrinks 1.5L", price: "₱880.00", category: "Family-treats" },
+            { name: "FB3", details: "1 Jumbo Litson Manok 6 BBQ Pork/Chicken Sisig mixed seafood Chopsuey dish 6 Plain Rice Softdrinks 1.5L", price: "₱990.00", category: "Family-treatsl" },
+            { name: "FB4", details: "1 Jumbo Litson Manok 6 BBQ 1 Bangus Pork/Chicken Sisig kare kare dish 6 Plain Rice Softdrinks 1.5L", price: "₱1000.00", category: "Family-treatsl" },
+            { name: "FB5", details: "1 Jumbo Litson Manok 10 BBQ 1 Bangus Pork/Chicken Sisig Kare-Kare Dish Chopsuey Dish Pancit 10 Plain Rice Softdrinks 1.5L", price: "₱1550.00", category: "Family-treats" },
+            { name: "FB6", details: "1 Jumbo Litson Manok 10 BBQ 1 Crispy pata 1 Bangus Pork/Chicken Sisig Kare-Kare Dish Chopsuey Dish Mixed seafood Pancit 10 Plain Rice Softdrinks 1.5L", price: "₱1850.00", category: "Family-treats" },
+
+        // SILOG items
+            { name: "LONGSILOG", details: "LONGGANISA EGG FRIED RICE", price: "₱80.00", category: "silog" },
+            { name: "PORKSILOG", details: "PORKCHOP EGG FRIED RICE", price: "₱90.00", category: "silog" },
+            { name: "HOTSILOG", details: "HOTDOG EGG FRIED RICE", price: "₱75.00", category: "silog" },
+            { name: "TOCILOG", details: "TOCINO EGG FRIED RICE", price: "₱75.00", category: "silog" },
+            { name: "CORNSILOG", details: "CORNED BEEF >EGG FRIED RICE", price: "₱75.00", category: "silog" },
+            { name: "TAPSILOG", details: "BEEF TAPA EGG FRIED RICE", price: "₱90.00", category: "silog" },
+            { name: "MALINGSILOG", details: "MALING EGG FRIED RICE", price: "₱75.00", category: "silog" },
+            { name: "HAMSILOG", details: "HAM EGG FRIED RICE", price: "₱75.00", category: "silog" },
+            { name: "LIEMPOSILOG", details: "LIEMPO EGG FRIED RICE", price: "₱110.00", category: "silog" },
+            { name: "CHICKSILOG", details: "CHICKEN EGG FRIED RICE", price: "₱95.00", category: "silog" },
+            { name: "BANGUSSILOG", details: "BANGUS (HALF) EGG FRIED RICE", price: "₱90.00", category: "silog" },
+            { name: "BACONSILOG", details: "BACON EGG FRIED RICE", price: "₱80.00", category: "silog" },
+            
+            // SOUPS items
+            { name: "CORN SOUP", details: "1 BOWL", price: "₱75.00", category: "soups" },
+            { name: "MUSHROOM SOUP", details: "1 BOWL", price: "₱75.00", category: "soups" },
+            { name: "CREAMY ASPARAGUS", details: "1 BOWL", price: "₱85.00", category: "soups" },
+            { name: "CRAB & CORN SOUP", details: "1 BOWL", price: "₱85.00", category: "soups" },
+            { name: "BULALO", details: "1 BOWL", price: "₱270.00", category: "soups" },
+            
+            
+            // DRINKS items
+            { name: "BUKO JUICE IN GLASS", details: "BUKO JUICE SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "BUKO JUICE IN PITCHER", details: "BUKO JUICE SERVED IN PITCHER", price: "₱100.00", category: "drinks" },
+            { name: "BUKO JUICE IN COCONUT SHELL", details: "BUKO JUICE SERVED IN COCONUT SHELL", price: "₱60.00", category: "drinks" },
+            { name: "ICED TEA IN GLASS", details: "ICED TEA SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "ICED TEA IN PITCHER", details: "ICED TEA SERVED IN PITCHER", price: "₱100.00", category: "drinks" },
+            { name: "CUCUMBER LEMONADE IN GLASS ", details: "CUCUMBER LEMONADE SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "CUCUMBER LEMONADE IN PITCHER ", details: "CUCUMBER LEMONADE SERVED IN PITCHER", price: "₱110.00", category: "drinks" },
+            { name: "BLUE LEMONADE IN GLASS", details: "BLUE LEMONADE SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "BLUE LEMONADE IN PITCHER", details: "BLUE LEMONADE SERVED IN PITCHER", price: "₱110.00", category: "drinks" },
+            { name: "PINK LEMONADE IN GLASS", details: "PINK LEMONADE SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "PINK LEMONADE IN PITCHER", details: "PINK LEMONADE SERVED IN PITCHER", price: "₱100.00", category: "drinks" },
+            { name: "SAGO'T GULAMAN IN GLASS", details: "SAGO'T GULAMAN SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "SAGO'T GULAMAN IN PITCHER", details: "SAGO'T GULAMAN SERVED IN PITCHER", price: "₱110.00", category: "drinks" },
+            { name: "BLACK GULAMAN IN GLASS", details: "BLACK GULAMAN SERVED IN DRINKING GLASS", price: "₱35.00", category: "drinks" },
+            { name: "BLACK GULAMAN IN PITCHER", details: "BLACK GULAMAN SERVED IN PITCHER", price: "₱110.00", category: "drinks" },
+            { name: "FRUIT SHAKE IN GLASS", details: "FRUIT SHAKE SERVED IN DRINKING GLASS", price: "₱70.00", category: "drinks" },
+            { name: "BUKO PANDAN SHAKE", details: "BUKO PANDAN SHAKE SERVED IN DRINKING GLASS", price: "₱70.00", category: "drinks" },
+            { name: "COKE /ROYAL/SPRITE MISMO", details: "1 BOTTLE OF MISMO SOFTDRINK", price: "₱18.00", category: "drinks" },
+            { name: "COKE /ROYAL/SPRITE 12 OZ", details: "1 BOTTLE OF 12 OZ SOFTDRINK", price: "₱25.00", category: "drinks" },
+            { name: "COKE /ROYAL/SPRITE KASALO", details: "1 BOTTLE OF KASALO SIZE SOFTDRINK", price: "₱35.00", category: "drinks" },
+            { name: "COKE /ROYAL/SPRITE 1.5 LITER", details: "1 BOTTLE OF 1.5 LITERS", price: "₱100.00", category: "drinks" },
+            { name: "BOTTLED WATER", details: "1 BOTTLE OF MINERAL WATER", price: "₱20.00", category: "drinks" },
+            { name: "PINEAPPLE JUICE IN CAN", details: "1 CAN", price: "₱45.00", category: "drinks" },
+            { name: "MINUTE MAID 250ML", details: "1 BOTTLE", price: "₱18.00", category: "drinks" },
+            { name: "REAL LEAF", details: "1 BOTTLE", price: "₱25.00", category: "drinks" },
+            { name: "COFFEE", details: "1 CUP", price: "₱30.00", category: "drinks" },
+            
+            // DESSERT items
+            { name: "HALO HALO WITH LECHE FLAN", details: "SERVED WITH WITH LECHE FLAN", price: "₱35.00", category: "dessert" },
+            { name: "HALO HALO WITH ICE CREAM", details: "SERVED WITH WITH ICE CREAM", price: "₱65.00", category: "dessert" },
+            { name: "HALO HALO SPECIAL", details: "SERVED WITH SPECIAL TOPPINGS", price: "₱110.00", category: "dessert" },
+            { name: "BUKO PANDAN", details: "1 SERVING", price: "₱110.00", category: "dessert" },
+            { name: "FRUIT SALAD", details: "1 SERVING", price: "₱110.00", category: "dessert" },
+            { name: "BUKO SALAD IN COCONUT SHELL", details: "1 SERVING ", price: "₱110.00", category: "dessert" },
+
+            // Sample SIZZLING MEAL items - replace with your actual menu
+            { name: "SQUABAMA ", details:"SERVED IN HOT PLATE", price: "₱75.00", category: "sizzling-meal" },
+            { name: "BEEF SISIG KEBAB", details:"SERVED IN HOT PLATE", price: "₱105.00", category: "sizzling-meal" },
+            { name: "CHICKEN SISIG ", details:"SERVED IN HOT PLATE", price: "₱85.00", category: "sizzling-meal" },
+             { name: "PORK SISIG", details:"SERVED IN HOT PLATE", price: "₱85.00", category: "sizzling-meal" },
+            { name: "LIEMPO", details:"SERVED IN HOT PLATE", price: "₱110.00", category: "sizzling-meal" },
+            { name: "PORKCHOP", details:"HOT PLATE", price: "₱90.00", category: "sizzling-meal" },
+             { name: "TENDERLOIN", details:"SERVED IN HOT PLATE", price: "₱135.00", category: "sizzling-meal" },
+            { name: "TANIGUE", details:"SERVED IN HOT PLATE", price:"₱115.00", category: "sizzling-meal" },
+            { name: "PUSIT W/ MAYO OR VEGGIES", details:"SERVED IN HOT PLATE", price: "₱105.00", category: "sizzling-meal" },
+            { name: "GAMBAS", details:"SESRVED IN HOT PLATE", price: "₱115.00", category: "sizzling-meal" },
+            { name: "BONELESS BANGUS W/ TALONG", details:"SERVED IN HOT PLATE", price: "₱135.00", category: "sizzling-meal" },
+            
+            
+            // Sample SIZZLING DISH items - replace with your actual menu
+            { name: "BEEF SISIG KEBAB", details: "SERVED IN HOT PLATE", price: "₱210.00", category: "sizzling-dish" },
+            { name: "PORK SISIG", details: "SERVED IN HOT PLATE", price: "₱180.00", category: "sizzling-dish" },
+            { name: "CHICKEN SISIG", details: "SERVED IN HOT PLATE", price: "₱180.00", category: "sizzling-dish" },
+            { name: "SHRIMP SISIG", details: "SERVED IN HOT PLATE", price: "₱210.00", category: "sizzling-dish" },
+            
+            // Sample OTHER MEALS items - replace with your actual menu
+            { name: "ANY-HAW RICE", details: "GOOD FOR 2 TO 3 PERONS", price: "₱110.00", category: "other-meals" },
+            { name: "ANY-HAW RICE", details: "GOOD FOR 5 TO 6 PERSONS", price: "₱210.00", category: "other-meals" },
+            { name: "PLAIN RICE", details: "1 PC", price: "₱20.00", category: "other-meals" },
+            { name: "GARLIC RICE", details: "1 ORDER", price: "₱25.00", category: "other-meals" },
+            { name: "VALENCIANA", details: "1 PC CHICKEN", price: "₱60.00", category: "other-meals" },
+            { name: "VALENCIANA", details: "2 PCS CHICKEN", price: "₱85.00", category: "other-meals" },
+            { name: "CHOPSUEY WITH RICE", details: "SOLO", price: "₱80.00", category: "other-meals" },
+            { name: "CHOPSUEY WITH RICE", details: "GOOD FOR 2 TO 3 PERSONS", price: "₱130.00", category: "other-meals" },
+            { name: "CHOPSUEY WITH RICE", details: "GOOD FOR 6 TO 8 PERSONS", price: "₱250.00", category: "other-meals" },
+             { name: "KARE KARE WITH RICE", details: "SOLO", price: "₱100.00", category: "other-meals" },
+            { name: "KARE KARE WITH RICE", details: "GOOD FOR 2 TO 3 PERSONS", price: "₱160.00", category: "other-meals" },
+            { name: "KARE KARE WITH RICE", details: "GOOD FOR 6 TO 8 PERSONS", price: "₱310.00", category: "other-meals" },
+            { name: "PINAKBET WITH BAGNET", details: "SOLO", price: "₱150.00", category: "other-meals" },
+            { name: "FRIED ITIK", details: "SOLO", price: "₱190.00", category: "other-meals" },
+             { name: "CRISPY PATA", details: "1 WHOLE", price: "₱350.00", category: "other-meals" },
+            { name: "LECHON KAWALI", details: "SOLO", price: "₱120.00", category: "other-meals" },
+            { name: "LECHON PAKSIW", details: "GOOD FOR 1 TO 2 PERSONS", price: "₱85.00", category: "other-meals" },
+            { name: "BEEF PARES", details: "SOLO", price: "₱85.00", category: "other-meals" },
+             { name: "KILAWIN TANIGUE", details: "SOLO", price: "₱160.00", category: "other-meals" },
+
+            
+            // Sample LITSONG MANOK items - replace with your actual menu
+            { name: "JUMBO SIZE", details: "LITSON MANOK", price: "₱231.00", category: "litsong-manok" },
+            { name: "REGULAR", details: "LITSON MANOK", price: "₱198.00", category: "litsong-manok" },
+            { name: "HALF JUMBO", details: "LITSON MANOK", price: "₱121.00", category: "litsong-manok" },
+            
+            // Sample LECHON BABOY items - replace with your actual menu
+            { name: "SMALL LECHON", details: "22 KILOS", price: "₱4900.00", category: "lechon-baboy" },
+            { name: "REGULAR LECHON", details: "25 KILOS", price: "₱5400.00", category: "lechon-baboy" },
+            { name: "JUMBO LECHON", details: "28 KILOS", price: "₱5900.00", category: "lechon-baboy" },
+            { name: "EXTRA JUMBO LECHON", details: "31 KILOS", price: "₱6400.00", category: "lechon-baboy" },
+            { name: "SUPER JUMBO LECHON", details: "35 KILOS", price: "₱6900.00", category: "lechon-baboy" },
+
+            // Sample VALENCIANA items - replace with your actual menu
+            { name: "V1",details: "GOOD FOR 8 PERSONS" ,price: "₱440.00", category: "Valenciana" },
+            { name: "V2",details:"GOOD FOR 12 PERSONS" ,price: "₱660.00", category: "Valenciana" },
+            { name: "V3",details: "GOOD FOR 20 PERSONS",price: "₱1100.00", category: "Valenciana" },
+
+            { name: "SINIGANG TANIGUE",details: "1 BOWL" ,price: "₱250.00", category: "Sinigang" },
+            { name: "SINIGANG BABOY",details:"1 BOWL" ,price: "₱660.00", category: "Sinigang" },
+            { name: "SINIGANG HIPON",details: "1 BOWL",price: "₱250", category: "Sinigang" }
+        ];
+
+        // Cart state
+        let cart = [];
+                
+
+        function displayMenuItems(category) {
+            menuItemsContainer.innerHTML = '';
+            let filteredItems = [];
+            let headingText = '';
+
+            if (category === 'all') {
+                filteredItems = allMenuItemsData.slice(0, 12);
+                headingText = "FEATURED MEALS";
+            } else {
+                filteredItems = allMenuItemsData.filter(item => item.category === category);
+                headingText = category.toUpperCase().replace(/-/g, ' ');
+            }
+
+            featuredHeading.textContent = headingText;
+
+            filteredItems.forEach(item => {
+                const menuItemCard = document.createElement('div');
+                menuItemCard.classList.add('menu-item-card');
+                menuItemCard.innerHTML = `
+                    <div class="item-code">${item.name}</div>
+                    <div class="item-details">${item.details || ''}</div>
+                    <div class="item-price">${item.price}</div>
+                    <button class="add-to-cart-button">ADD TO CART</button>
+                `;
+                menuItemsContainer.appendChild(menuItemCard);
+            });
+        }
+
+        // Show cart popup when clicking MY CART
+        document.querySelector('.my-cart').addEventListener('click', function() {
+            showCartPopup();
+        });
+        //search bar functionality
+        // --- SEARCH BAR FUNCTIONALITY ---
+
+const searchInput = document.querySelector('.search-box input');
+const searchIcon = document.querySelector('.search-icon');
+
+// Helper: highlight and scroll to item
+function highlightAndScrollToItem(itemName) {
+    // Remove previous highlights
+    document.querySelectorAll('.menu-item-card').forEach(card => {
+        card.style.boxShadow = '';
+        card.style.border = '1px solid #b71c1c';
+        card.style.backgroundColor = '#fff';
+    });
+
+    // Find and highlight the card
+    const cards = document.querySelectorAll('.menu-item-card');
+    let found = false;
+    cards.forEach(card => {
+        const code = card.querySelector('.item-code').textContent.trim().toLowerCase();
+        if (code === itemName.trim().toLowerCase()) {
+            card.style.boxShadow = '0 0 0 4px #ff6600, 0 2px 4px rgba(0,0,0,0.658)';
+            card.style.border = '4px solid #ff6600';
+            card.style.backgroundColor = '#fffbe6';
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            found = true;
+        }
+    });
+    return found;
+}
+
+// Main search function
+function searchMenu() {
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query) return;
+
+    // Find the first matching item
+    const foundItem = allMenuItemsData.find(item =>
+        item.name.toLowerCase().includes(query) ||
+        (item.details && item.details.toLowerCase().includes(query))
+    );
+
+    if (foundItem) {
+        // Switch to the item's category
+        displayMenuItems(foundItem.category);
+
+        // Set the correct category button as active
+        categoryButtons.forEach(btn => {
+            if (btn.dataset.category === foundItem.category) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Wait for DOM update, then highlight
+        setTimeout(() => {
+            highlightAndScrollToItem(foundItem.name);
+        }, 50);
+    } else {
+        // Optionally, show a "not found" message
+        featuredHeading.textContent = "No item found for: " + searchInput.value;
+        menuItemsContainer.innerHTML = '';
+    }
+}
+
+        // Search on icon click or Enter key
+        searchIcon.addEventListener('click', searchMenu);
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') searchMenu();
+        });
+        // Add to cart functionality
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('add-to-cart-button')) {
+                const card = e.target.closest('.menu-item-card');
+                const itemName = card.querySelector('.item-code').textContent;
+                const itemPrice = card.querySelector('.item-price').textContent;
+                
+                addToCart(itemName, itemPrice);
+                
+                e.target.textContent = "ADDED!";
+                setTimeout(() => {
+                    e.target.textContent = "ADD TO CART";
+                }, 1000);
+            }
+        });
+
+        function addToCart(name, price) {
+            const priceNumber = parseFloat(price.replace('₱', ''));
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: priceNumber,
+                    qty: 1
+                });
+            }
+            showCartPopup();
+        }
+
+        function showCartPopup() {
+            renderCart();
+            document.getElementById('cartPopupBg').style.display = 'flex';
+        }
+
+        function hideCartPopup() {
+            document.getElementById('cartPopupBg').style.display = 'none';
+        }
+
+        function renderCart() {
+            const cartList = document.getElementById('cartList');
+            cartList.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartList.innerHTML = '<em>Your cart is empty.</em>';
+                document.getElementById('cartTotal').textContent = '';
+                return;
+            }
+            
+            cart.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <span>${item.name}</span>
+                    <input type="number" min="1" value="${item.qty}" data-idx="${idx}">
+                    <span>₱${(item.price * item.qty).toFixed(2)}</span>
+                    <button class="remove-btn" title="Remove" data-remove="${idx}">&times;</button>
+                `;
+                cartList.appendChild(div);
+            });
+
+            const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            document.getElementById('cartTotal').textContent = 'Total: ₱' + total.toFixed(2);
+
+            cartList.querySelectorAll('input[type="number"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    const idx = +this.dataset.idx;
+                    let val = parseInt(this.value, 10);
+                    if (isNaN(val) || val < 1) val = 1;
+                    cart[idx].qty = val;
+                    renderCart();
+                });
+            });
+
+            cartList.querySelectorAll('button[data-remove]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = +this.dataset.remove;
+                    cart.splice(idx, 1);
+                    renderCart();
+                });
+            });
+        }
+
+        // Button event listeners
+        document.getElementById('checkoutBtn').onclick = function() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            alert('Thank you for your order!\n\n' + cart.map(item => `${item.qty} x ${item.name}`).join('\n'));
+            cart = [];
+            hideCartPopup();
+        };
+
+        document.getElementById('saveBtn').onclick = function() {
+            hideCartPopup();
+        };
+
+        document.getElementById('cancelBtn').onclick = function() {
+            hideCartPopup();
+        };
+
+        document.getElementById('cartPopupBg').onclick = function(e) {
+            if (e.target === this) hideCartPopup();
+        };
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const category = this.dataset.category;
+                displayMenuItems(category);
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+            });
+        });
+    </script>
+</body>
+</html>

@@ -8,6 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='assets/js/cashier_system_scripts.js') }}" defer></script>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/images/navbar_logo.png') }}">
+    <script>
+        // Hide "Unknown" text when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // This will find and hide any element with text content "Unknown"
+            const elements = document.querySelectorAll('*');
+            for (const element of elements) {
+                if (element.childNodes.length === 1 && 
+                    element.childNodes[0].nodeType === 3 && 
+                    element.textContent.trim() === 'Unknown') {
+                    element.style.display = 'none';
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -60,5 +74,7 @@
         </div>
     </div>
 
+    <!-- Dark Background Overlay -->
+    <div id="overlay" style="display: none;"></div>
 </body>
 </html>

@@ -1,12 +1,3 @@
-.settings-panel {
-    display: none;
-    position: absolute;
-}
-
-.settings-panel.visible {
-    display: block;
-}
-
 body, html {
     margin: 0;
     padding: 0;
@@ -101,6 +92,10 @@ body, html {
         overflow: hidden;
         z-index: 1000;
         min-width: 200px;
+    }
+
+    .settings-panel.visible {
+        display: block;
     }
 
     .settings-panel a {

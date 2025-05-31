@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Any-Haw Litsong Manok - Menu</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+
+        .menu-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 90%;
+            max-width: 960px;
+        }
+
+        .header {
+            background-color: #ff8c00; 
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .about-us {
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .menu-body {
+            display: flex;
+        }
+
+        .menu-categories {
+            background-color: #d32f2f; 
+            color: white;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .category-button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .category-button:hover {
+            background-color: #b71c1c; 
+        }
+
+        .content-area {
+            flex: 1;
+            background-color: #f4f4f4; 
+        }
+
+        .featured-heading {
+            background-color: #f4f4f4; 
+            margin: 0;
+            padding: 15px;
+            color: #000;
+            font-size: 24px;
+        }
+
+        .menu-items-container {
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            overflow: auto;
+            max-height: 650px;
+        }
+        
+        .menu-item-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            height: 200px;
+            overflow: hidden;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.507);
+        }
+
+        .item-code {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff8c00;
+            margin-bottom: 20px;
+        }
+
+        .item-details {
+            font-size: 15px;
+            color: #0a0a0a;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .item-price {
+            font-size: 1.3em;
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .add-to-cart-button {
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            padding: 10px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.507);
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #e67e00;
+        }
+
+        .slider-controls {
+            display: none; 
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .menu-items-container:hover + .slider-controls,
+        .slider-controls:hover {
+            display: block;
+        }
+
+       
+        @media (max-width: 768px) {
+            .menu-body {
+                flex-direction: column;
+            }
+
+            .menu-categories {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 10px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .category-button {
+                padding: 10px 15px;
+                margin-right: 10px;
+                width: auto;
+            }
+
+            .menu-items-container {
+                padding: 10px;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .menu-item-card {
+                padding: 10px;
+            }
+
+            .item-code {
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+
+            .item-details {
+                font-size: 0.8em;
+                margin-bottom: 5px;
+            }
+
+            .item-price {
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+
+            .add-to-cart-button {
+                padding: 8px 15px;
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-items-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <div class="header">
+            <div class="logo">Any-Haw<br>Litsong Manok</div>
+            <div class="about-us">ABOUT US</div>
+        </div>
+        <div class="menu-body">
+            <div class="menu-categories">
+                <button class="category-button">WHAT'S YOUR CRAVINGS?</button>
+                <button class="category-button">SIZZLING MEAL</button>
+                <button class="category-button">SIZZLING DISH</button>
+                <button class="category-button">SILOG</button>
+                <button class="category-button">SOUPS</button>
+                <button class="category-button">DESSERT</button>
+                <button class="category-button">DRINKS</button>
+                <button class="category-button">OTHER MEALS</button>
+                <button class="category-button">LITSONG MANOK</button>
+                <button class="category-button">LECHON BABOY</button>
+            </div>
+            <div class="content-area">
+                <h1 class="featured-heading">LECHON BABOY</h1>
+                <div class="menu-items-container">            
+                    <div class="menu-item-card">
+                        <div class="item-code">SMALL LECHON</div>
+                        <div class="item-details">
+                             25 KILOS<br>
+                             
+                        </div>
+                        <div class="item-price">₱4,900.00</div>
+                        <button class="add-to-cart-button">ADD TO CART</button>
+                    </div>
+                    
+                    <div class="menu-item-card">
+                        <div class="item-code">REGULAR LECHON</div>
+                        <div class="item-details">
+                            25 KILOS<br>
+                            
+                        </div>
+                        <div class="item-price">₱5,400.00</div>
+                        <button class="add-to-cart-button">ADD TO CART</button>
+                    </div>
+                    
+                    <div class="menu-item-card">
+                        <div class="item-code">JUMBO LECHON</div>
+                        <div class="item-details">
+                            28 KILOS<br>
+                                    
+                        </div>
+                        <div class="item-price">₱5,900.00</div>
+                        <button class="add-to-cart-button">ADD TO CART</button>
+                    </div>
+                    
+                    <div class="menu-item-card">
+                        <div class="item-code">EXTRA JUMBO LECHON</div>
+                        <div class="item-details">
+                            31 KILOS<br>
+                            
+                        </div>
+                        <div class="item-price">₱6,400.00</div>
+                        <button class="add-to-cart-button">ADD TO CART</button>
+                    </div>
+                    
+                    <div class="menu-item-card">
+                        <div class="item-code">SUPER JUMBO LECHON</div>
+                        <div class="item-details">
+                            35 KILOS<br>
+                            
+                        </div>
+                        <div class="item-price">₱6,900.00</div>
+                        <button class="add-to-cart-button">ADD TO CART</button>
+                    </div>
+                    
+            </div>
+        </div>
+    </div>
+   
+
+    <script>
+        const categoryButtons = document.querySelectorAll('.category-button');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const category = this.textContent;
+                console.log(`Category clicked: ${category}`);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -55,18 +55,18 @@ body, html {
         font-weight: bold;
     }
 
-    body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
-    overflow: hidden;
+/* Remove any pseudo-elements that might add content */
+header:after, 
+header::after,
+nav:after, 
+nav::after {
+    content: none !important;
 }
 
 /* Sidebar Menu Styling remains the same */
 .sidebar {
     width: 10%; /* takes 25% of main-section */
-    min-width: 150px; /* optional: don’t get too small */
+    min-width: 150px; /* optional: don't get too small */
     height: 100%; /* Ensures it stretches full height of .main-section */
     background-color: #ff6600c7;
     padding: 20px 15px;

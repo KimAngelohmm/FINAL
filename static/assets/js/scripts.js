@@ -127,37 +127,39 @@ document.getElementById("loginBtn").addEventListener("click", async function (e)
         const data = await response.json();
 
         if (response.ok && data.message === "Login successful") {
-            alert("Login successful!");
-
-            const role = data.user.role; // Should be e.g., "Admin", "Customer", etc.
-
+            console.log("DEBUG - login successful response:", data);
+            const role = data.user.role.toLowerCase(); // Convert to lowercase for case-insensitive comparison
+            console.log("DEBUG - Role detected:", role);
+            
             switch (role) {
-                case "Admin":
+                case "admin":
                     window.location.href = "/admin_ui";
                     break;
-                case "Customer":
+                case "customer":
                     window.location.href = "/customer_ui";
                     break;
-                case "Staff":
+                case "staff":
                     window.location.href = "/staff_ui";
                     break;
-                case "Cashier":
+                case "cashier":
+                    console.log("DEBUG - Redirecting to cashier_loader");
                     window.location.href = "/backend/cashier/cashier_loader";
                     break;
-                case "Kitchen":
+                case "kitchen":
                     window.location.href = "/backend/kitchen/kitchen_loader";
                     break;
-                case "Delivery":
+                case "delivery":
                     window.location.href = "/delivery_ui";
                     break;
                 default:
-                    alert("Error Retrieving Account Type. Please contact support.");
+                    console.log("DEBUG - Unknown role:", role);
+                    alert("Error: Unknown account type '" + role + "'. Please contact support.");
             }
         } else {
             alert("Error: " + data.message);
         }
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Login error:", error);
         alert("An error occurred during login.");
     }
 });

@@ -100,11 +100,11 @@ def cashier_delivery_history_loader():
             })
 
 
-        return render_template('Cashier_dine-in_history.html', orders=orders)
+        return render_template('Cashier_delivery_history.html', orders=orders)
 
     except Exception as e:
         print("Error loading order queue:", e)
-        return render_template('Cashier_dine-in_history.html', orders=[])
+        return render_template('Cashier_delivery_history.html', orders=[])
 
     finally:
         cursor.close()

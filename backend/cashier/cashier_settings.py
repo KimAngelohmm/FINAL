@@ -8,11 +8,16 @@ cashier_settings_bp = Blueprint('cashier_settings', __name__)
 @cashier_settings_bp.route('/update_account_info', methods=['POST'])
 def update_account_info():
     conn = None
+    cursor = None
     try:
         data = request.get_json()
         account_id = session.get('user_id')
 
+        print(f"DEBUG - update_account_info - Request data: {data}")
+        print(f"DEBUG - update_account_info - User ID: {account_id}")
+
         if not account_id:
+            print("DEBUG - update_account_info - Unauthorized (no user_id)")
             return jsonify({"message": "Unauthorized"}), 401
 
         user_name = data.get('username')
@@ -22,27 +27,61 @@ def update_account_info():
         email = data.get('email')
         contactnumber = data.get('contactnumber')
 
-        conn = create_connection() 
-        cursor = conn.cursor()
+        # Validate required fields
+        if not all([user_name, firstname, lastname, email]):
+            print("DEBUG - update_account_info - Missing required fields")
+            return jsonify({"message": "Missing required fields"}), 400
 
-        cursor.callproc('updateaccountinfo_personel', (
-            account_id,
+        conn = create_connection() 
+        if not conn:
+            print("DEBUG - update_account_info - Database connection failed")
+            return jsonify({"message": "Database connection failed"}), 500
+            
+        cursor = conn.cursor()
+        
+        # Use direct SQL update with corrected column names
+        update_query = """
+            UPDATE restaurant_accounts 
+            SET username = %s, 
+                first_name = %s, 
+                middle_name = %s, 
+                last_name = %s, 
+                email = %s, 
+                contact_number = %s 
+            WHERE account_id = %s
+        """
+        
+        cursor.execute(update_query, (
             user_name,
             firstname,
-            middlename,
+            middlename if middlename else "",  # Handle null/None values
             lastname,
             email,
-            contactnumber
+            contactnumber if contactnumber else "",  # Handle null/None values
+            account_id
         ))
+        
+        # Check if the update affected any rows
+        rows_affected = cursor.rowcount
+        print(f"DEBUG - update_account_info - Rows affected: {rows_affected}")
+        
+        if rows_affected == 0:
+            print(f"DEBUG - update_account_info - No record found for user_id: {account_id}")
+            return jsonify({"message": "No matching account found"}), 404
 
         conn.commit()
+        print("DEBUG - update_account_info - Account updated successfully")
         return jsonify({"message": "Account updated successfully!"}), 200
 
     except Exception as e:
-        print(f"Error updating account: {e}")
-        return jsonify({"message": "An error occurred"}), 500
+        print(f"DEBUG - update_account_info - Error: {e}")
+        if conn:
+            conn.rollback()
+        return jsonify({"message": f"Error updating account: {str(e)}"}), 500
 
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             conn.close()
 
@@ -57,30 +96,45 @@ def get_user_account_info():
             return jsonify({'error': 'User not logged in'}), 401
 
         conn = create_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
-        cursor.callproc('getaccountinfo_personel', (user_id,))
-        result_data = None
+        # Use direct query instead of stored procedure
+        print(f"DEBUG - get_user_account_info - Getting info for user_id: {user_id}")
+        
+        cursor.execute("""
+            SELECT 
+                ra.username,
+                ra.Fname AS first_name,
+                ra.Mname AS middle_name,
+                ra.Lname AS last_name,
+                ra.contact_number,
+                ra.email,
+                ra.account_type AS position_name
+            FROM 
+                restaurant_accounts ra
+            WHERE 
+                ra.account_id = %s
+        """, (user_id,))
+        
+        result = cursor.fetchone()
+        print(f"DEBUG - get_user_account_info - Query result: {result}")
 
-        for result in cursor.stored_results():
-            result_data = result.fetchone()
-            break
-
-        if result_data:
+        if result:
             return jsonify({
-                'username': result_data[0],
-                'first_name': result_data[1],
-                'middle_name': result_data[2],
-                'last_name': result_data[3],
-                'contact_number': result_data[4],
-                'email': result_data[5],
-                'position_name': result_data[6]
+                'username': result['username'],
+                'first_name': result['first_name'],
+                'middle_name': result['middle_name'],
+                'last_name': result['last_name'],
+                'contact_number': result['contact_number'],
+                'email': result['email'],
+                'position_name': result['position_name']
             }), 200
         else:
+            print(f"DEBUG - get_user_account_info - No info found for user_id: {user_id}")
             return jsonify({'error': 'User data not found'}), 404
 
     except Exception as e:
-        print(f"[ERROR] get_user_account_info: {e}")
+        print(f"DEBUG - get_user_account_info - Error: {e}")
         return jsonify({'error': 'Server error while fetching account info'}), 500
 
     finally:
@@ -166,13 +220,22 @@ def update_profile_picture():
         conn = create_connection()
         cursor = conn.cursor()
 
-        cursor.callproc('UpdateProfilePicture_personel', (user_id, image_blob))
+        # Use direct query instead of stored procedure
+        print(f"DEBUG - update_profile_picture - Updating profile picture for user_id: {user_id}")
+        
+        # Update profile image in restaurant accounts table
+        cursor.execute(
+            "UPDATE restaurant_accounts SET profile_image = %s WHERE account_id = %s", 
+            (image_blob, user_id)
+        )
+        
         conn.commit()
-
+        
+        print(f"DEBUG - update_profile_picture - Profile picture updated successfully")
         return jsonify({'message': 'Profile picture updated successfully'}), 200
 
     except Exception as e:
-        print(f"[ERROR] update_profile_picture: {e}")
+        print(f"DEBUG - update_profile_picture - Error: {e}")
         return jsonify({'error': 'Failed to update profile picture'}), 500
 
     finally:

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us - Any-Haw Litson Manok</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/admin_styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/images/navbar_logo.png') }}">
+    <script src="{{ url_for('static', filename='assets/js/admin_scripts.js') }}" defer></script>
+</head>
+<body>
+    <!-- Updated navbar to match admin UI design -->
+    <header>
+        <div class="logo-title">
+            <a href="{{ url_for('admin_dashboard') }}">
+                <img src="{{ url_for('static', filename='assets/images/navbar_logo.png') }}" alt="Any-Haw Logo">
+            </a>
+        </div>
+        
+        <div class="right-section">
+            <!-- Navigation links moved to right side -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('admin_dashboard') }}">DASHBOARD</a></li>
+                    <li><a href="{{ url_for('admin_bp.manage_menu') }}">MANAGE MENU</a></li>
+                    <li><a href="{{ url_for('admin_bp.manage_users') }}">MANAGE ACCOUNTS</a></li>
+                    <li><a href="{{ url_for('admin_bp.about_us') }}" class="active">ABOUT US</a></li>
+                </ul>
+            </nav>
+            
+            <div class="admin-profile-container">
+                <div class="profile-pic">
+                    <img src="{{ url_for('admin_bp.profile_pic') }}" alt="Profile Picture" class="profile-pic">
+                </div>
+                <div class="admin-profile-text">
+                    <span>{{ session.get('username', 'Admin') }}</span>
+                </div>
+                <div class="settings-dropdown">
+                    <button class="settings-btn" id="settingsIcon">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="settings-panel" id="settingsPanel">
+                        <a href="#" id="updateprofilepic_button">Profile Picture</a>
+                        <a href="#" id="editaccount_button">Account Info</a>
+                        <a href="#" id="changepassword_button">Change Password</a>
+                        <form action="{{ url_for('logout_bp.logout_sys') }}" method="post">
+                            <button type="submit" class="logout-link">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content section -->
+    <section class="main-section">
+        <div class="admin-content-container">
+            <div class="about-us-container">
+                <h1>About Any-Haw Litson Manok</h1>
+                
+                <div class="about-us-content">
+                    <div class="about-section">
+                        <h2>Our Story</h2>
+                        <p>{{ content.story }}</p>
+                    </div>
+
+                    <div class="about-section">
+                        <h2>Our Mission</h2>
+                        <p>{{ content.mission }}</p>
+                    </div>
+
+                    <div class="about-section">
+                        <h2>Our Vision</h2>
+                        <p>{{ content.vision }}</p>
+                    </div>
+                </div>
+
+                <div class="edit-section">
+                    <h2>Edit About Us Content</h2>
+                    <form id="about-us-form">
+                        <div class="form-group">
+                            <label for="story">Our Story:</label>
+                            <textarea id="story" name="story" rows="4">{{ content.story }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="mission">Our Mission:</label>
+                            <textarea id="mission" name="mission" rows="4">{{ content.mission }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="vision">Our Vision:</label>
+                            <textarea id="vision" name="vision" rows="4">{{ content.vision }}</textarea>
+                        </div>
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dark Background Overlay -->
+    <div id="overlay" class="overlay" style="display: none;"></div>
+
+    <!-- Include the profile management UI elements from admin_ui.html -->
+    <div id="updateprofilepicUI" class="floating-ui" style="display: none;">
+        <div class="floating-inner">
+            <h2>Update Profile Picture</h2>
+            <div class="profile-pic-preview">
+                <img src="{{ url_for('admin_bp.profile_pic') }}" alt="Profile Picture" id="profile_pic_preview">
+            </div>
+            <form id="updateprofilepic_form" enctype="multipart/form-data" class="upload-controls">
+                <div class="file-input-container">
+                    <input type="file" id="profile_pic_input" accept="image/*" style="display: none;">
+                    <label for="profile_pic_input" class="file-input-button">Choose File</label>
+                    <span id="file-name">No file chosen</span>
+                </div>
+                <button type="submit" id="updateprofilepic_btn" class="updateprofilepic-btn">Save New Profile Picture</button>
+            </form>
+            <button id="updateprofilepic_closeBtn" class="close-btn">X</button>
+        </div>
+    </div>
+
+    <!-- Add JS for handling the about us form submission -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const aboutUsForm = document.getElementById('about-us-form');
+            
+            if (aboutUsForm) {
+                aboutUsForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const story = document.getElementById('story').value;
+                    const mission = document.getElementById('mission').value;
+                    const vision = document.getElementById('vision').value;
+                    
+                    // Here you would send the data to the server
+                    // This is a placeholder - you'll need to implement the actual API call
+                    fetch('/api/update-about-us', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            story: story,
+                            mission: mission,
+                            vision: vision
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('About Us content updated successfully!');
+                            // Update the displayed content
+                            document.querySelectorAll('.about-section p')[0].textContent = story;
+                            document.querySelectorAll('.about-section p')[1].textContent = mission;
+                            document.querySelectorAll('.about-section p')[2].textContent = vision;
+                        } else {
+                            alert('Error updating About Us content: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating the About Us content.');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
